@@ -3,7 +3,7 @@ package util_test
 import (
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )

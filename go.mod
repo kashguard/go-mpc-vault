@@ -1,4 +1,4 @@
-module allaboutapps.dev/aw/go-starter
+module github.com/kashguard/go-mpc-vault
 
 go 1.24.0
 

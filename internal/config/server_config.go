@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/mailer/transport"
-	"allaboutapps.dev/aw/go-starter/internal/push/provider"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/mailer/transport"
+	"github.com/kashguard/go-mpc-vault/internal/push/provider"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/rs/zerolog"
 	"golang.org/x/text/language"
 )

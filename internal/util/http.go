@@ -12,8 +12,8 @@ import (
 	"net/http"
 	"strings"
 
-	"allaboutapps.dev/aw/go-starter/internal/api/httperrors"
-	"allaboutapps.dev/aw/go-starter/internal/types"
+	"github.com/kashguard/go-mpc-vault/internal/api/httperrors"
+	"github.com/kashguard/go-mpc-vault/internal/types"
 	"github.com/gabriel-vasile/mimetype"
 	oerrors "github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"

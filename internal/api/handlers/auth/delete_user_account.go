@@ -3,11 +3,11 @@ package auth
 import (
 	"net/http"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/auth"
-	"allaboutapps.dev/aw/go-starter/internal/data/dto"
-	"allaboutapps.dev/aw/go-starter/internal/types"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/api"
+	"github.com/kashguard/go-mpc-vault/internal/auth"
+	"github.com/kashguard/go-mpc-vault/internal/data/dto"
+	"github.com/kashguard/go-mpc-vault/internal/types"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/go-openapi/swag"
 	"github.com/labstack/echo/v4"
 )

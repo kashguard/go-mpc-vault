@@ -7,10 +7,10 @@
 package api
 
 import (
-	"allaboutapps.dev/aw/go-starter/internal/auth"
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/data/local"
-	"allaboutapps.dev/aw/go-starter/internal/metrics"
+	"github.com/kashguard/go-mpc-vault/internal/auth"
+	"github.com/kashguard/go-mpc-vault/internal/config"
+	"github.com/kashguard/go-mpc-vault/internal/data/local"
+	"github.com/kashguard/go-mpc-vault/internal/metrics"
 	"database/sql"
 	"github.com/google/wire"
 	"testing"

@@ -3,7 +3,7 @@
 package cmd
 
 import (
-	"allaboutapps.dev/aw/go-starter/scripts/internal/util"
+	"github.com/kashguard/go-mpc-vault/scripts/internal/util"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

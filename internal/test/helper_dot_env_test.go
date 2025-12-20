@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/test"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/config"
+	"github.com/kashguard/go-mpc-vault/internal/test"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/stretchr/testify/assert"
 )
 

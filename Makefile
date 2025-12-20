@@ -449,10 +449,12 @@ changelog-release: ##- Generates a changelog release using the $(VERSION) variab
 # http://make.mad-scientist.net/deferred-simple-variable-expansion/
 
 # go module name (as in go.mod)
+ifndef GO_MODULE_NAME
 GO_MODULE_NAME = $(eval GO_MODULE_NAME := $$(shell \
 	(mkdir -p tmp 2> /dev/null && cat tmp/.modulename 2> /dev/null) \
 	|| (gsdev modulename 2> /dev/null | tee tmp/.modulename) || echo "unknown" \
 ))$(GO_MODULE_NAME)
+endif
 
 # https://medium.com/the-go-journey/adding-version-information-to-go-binaries-e1b79878f6f2
 ARG_COMMIT = $(eval ARG_COMMIT := $$(shell \

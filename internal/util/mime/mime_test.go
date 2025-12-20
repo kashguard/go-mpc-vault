@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/util"
-	"allaboutapps.dev/aw/go-starter/internal/util/mime"
+	"github.com/kashguard/go-mpc-vault/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/util/mime"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"allaboutapps.dev/aw/go-starter/internal/types"
+	"github.com/kashguard/go-mpc-vault/internal/types"
 	"github.com/aarondl/sqlboiler/v4/queries/qm"
 )
 

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"allaboutapps.dev/aw/go-starter/internal/types"
+	"github.com/kashguard/go-mpc-vault/internal/types"
 	"github.com/go-openapi/swag"
 	"github.com/labstack/echo/v4"
 )

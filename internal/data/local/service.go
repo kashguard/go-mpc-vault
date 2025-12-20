@@ -3,7 +3,7 @@ package local
 import (
 	"database/sql"
 
-	"allaboutapps.dev/aw/go-starter/internal/config"
+	"github.com/kashguard/go-mpc-vault/internal/config"
 	"github.com/dropbox/godropbox/time2"
 )
 

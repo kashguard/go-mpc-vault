@@ -3,9 +3,9 @@ package db_test
 import (
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/test"
-	"allaboutapps.dev/aw/go-starter/internal/util/db"
+	"github.com/kashguard/go-mpc-vault/internal/models"
+	"github.com/kashguard/go-mpc-vault/internal/test"
+	"github.com/kashguard/go-mpc-vault/internal/util/db"
 	"github.com/aarondl/sqlboiler/v4/queries"
 	"github.com/aarondl/sqlboiler/v4/queries/qm"
 	"github.com/stretchr/testify/assert"

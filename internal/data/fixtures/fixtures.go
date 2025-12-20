@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/models"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/aarondl/sqlboiler/v4/boil"
 )
 

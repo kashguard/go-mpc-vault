@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/metrics/users"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/config"
+	"github.com/kashguard/go-mpc-vault/internal/metrics/users"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 	"github.com/dlmiddlecote/sqlstats"
 	"github.com/prometheus/client_golang/prometheus"
 )

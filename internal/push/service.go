@@ -6,9 +6,9 @@ import (
 	"errors"
 	"fmt"
 
-	"allaboutapps.dev/aw/go-starter/internal/data/dto"
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/kashguard/go-mpc-vault/internal/data/dto"
+	"github.com/kashguard/go-mpc-vault/internal/models"
+	"github.com/kashguard/go-mpc-vault/internal/util"
 )
 
 type ProviderType string

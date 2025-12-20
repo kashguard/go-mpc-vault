@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"allaboutapps.dev/aw/go-starter/cmd/db"
-	"allaboutapps.dev/aw/go-starter/cmd/env"
-	"allaboutapps.dev/aw/go-starter/cmd/probe"
-	"allaboutapps.dev/aw/go-starter/cmd/server"
-	"allaboutapps.dev/aw/go-starter/internal/config"
+	"github.com/kashguard/go-mpc-vault/cmd/db"
+	"github.com/kashguard/go-mpc-vault/cmd/env"
+	"github.com/kashguard/go-mpc-vault/cmd/probe"
+	"github.com/kashguard/go-mpc-vault/cmd/server"
+	"github.com/kashguard/go-mpc-vault/internal/config"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

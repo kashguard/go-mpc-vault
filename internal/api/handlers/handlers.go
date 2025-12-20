@@ -2,11 +2,11 @@
 package handlers
 
 import (
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/handlers/auth"
-	"allaboutapps.dev/aw/go-starter/internal/api/handlers/common"
-	"allaboutapps.dev/aw/go-starter/internal/api/handlers/push"
-	"allaboutapps.dev/aw/go-starter/internal/api/handlers/wellknown"
+	"github.com/kashguard/go-mpc-vault/internal/api"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/auth"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/common"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/push"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/wellknown"
 	"github.com/labstack/echo/v4"
 )
 

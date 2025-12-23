@@ -38,8 +38,25 @@ info-go: ##- (opt) Prints go.mod updates, module-name and current go version.
 lint: check-gen-dirs check-script-dir check-handlers check-embedded-modules-go-not go-lint  ##- Runs golangci-lint and make check-*.
 
 # these recipies may execute in parallel
-build-pre: sql swagger go-generate ##- (opt) Runs pre-build related targets (sql, swagger, go-generate-handlers, go-generate).
+# Note: swagger must complete before go-generate (go generate may need generated types)
+build-pre: sql swagger proto ##- (opt) Runs pre-build related targets (sql, swagger, proto, go-generate-handlers, go-generate).
+	@$(MAKE) go-generate
 	@$(MAKE) go-generate-handlers
+
+proto: ##- (opt) Generates Go code from proto files.
+	@echo "make proto"
+	@mkdir -p internal/infra/grpc/v1 internal/api/grpc/v1
+	@protoc -I proto \
+		--go_out=. --go_opt=paths=source_relative \
+		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+		proto/infra/v1/*.proto
+	@protoc -I proto \
+		--go_out=. --go_opt=paths=source_relative \
+		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+		proto/api/v1/*.proto
+	@mv infra/v1/*.go internal/infra/grpc/v1/ 2>/dev/null || true
+	@mv api/v1/*.go internal/api/grpc/v1/ 2>/dev/null || true
+	@sed -i 's|github.com/kashguard/go-mpc-vault/internal/infra/grpc/v1|github.com/kashguard/go-mpc-vault/internal/infra/grpc/v1;infra|g' internal/infra/grpc/v1/*.go 2>/dev/null || true
 
 go-format: ##- (opt) Runs go format.
 	go fmt ./...
@@ -480,7 +497,7 @@ LDFLAGS = $(eval LDFLAGS := "\
 # https://www.gnu.org/software/make/manual/html_node/Special-Targets.html
 # https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
 # ignore matching file/make rule combinations in working-dir
-.PHONY: test help
+.PHONY: test help proto
 
 # https://unix.stackexchange.com/questions/153763/dont-stop-makeing-if-a-command-fails-but-check-exit-status
 # https://www.gnu.org/software/make/manual/html_node/One-Shell.html

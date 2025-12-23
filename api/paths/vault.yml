@@ -1,0 +1,53 @@
+swagger: "2.0"
+paths:
+  /api/v1/vaults:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - vault
+      summary: Create a new vault
+      operationId: PostCreateVault
+      parameters:
+        - name: Payload
+          in: body
+          schema:
+            $ref: ../definitions/vault.yml#/definitions/CreateVaultPayload
+      responses:
+        "200":
+          description: Vault Created
+          schema:
+            $ref: ../definitions/vault.yml#/definitions/CreateVaultResponse
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+
+  /api/v1/vaults/{vaultId}/wallets:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - vault
+      summary: Create a new wallet in a vault
+      operationId: PostCreateWallet
+      parameters:
+        - name: vaultId
+          in: path
+          required: true
+          type: string
+        - name: Payload
+          in: body
+          schema:
+            $ref: ../definitions/vault.yml#/definitions/CreateWalletPayload
+      responses:
+        "200":
+          description: Wallet Created
+          schema:
+            $ref: ../definitions/vault.yml#/definitions/CreateWalletResponse
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Vault Not Found

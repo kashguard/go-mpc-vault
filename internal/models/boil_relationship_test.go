@@ -9,11 +9,34 @@ import "testing"
 // or deadlocks can occur.
 func TestToOne(t *testing.T) {
 	t.Run("AccessTokenToUserUsingUser", testAccessTokenToOneUserUsingUser)
+	t.Run("AddressBookToChainUsingChain", testAddressBookToOneChainUsingChain)
+	t.Run("AddressBookToUserUsingCreatedByUser", testAddressBookToOneUserUsingCreatedByUser)
+	t.Run("AddressBookToOrganizationUsingOrganization", testAddressBookToOneOrganizationUsingOrganization)
 	t.Run("AppUserProfileToUserUsingUser", testAppUserProfileToOneUserUsingUser)
+	t.Run("ApprovalToSigningRequestUsingRequest", testApprovalToOneSigningRequestUsingRequest)
+	t.Run("ApprovalToUserUsingUser", testApprovalToOneUserUsingUser)
+	t.Run("AssetToChainUsingChain", testAssetToOneChainUsingChain)
+	t.Run("AuditLogToOrganizationUsingOrganization", testAuditLogToOneOrganizationUsingOrganization)
+	t.Run("AuditLogToUserUsingUser", testAuditLogToOneUserUsingUser)
 	t.Run("ConfirmationTokenToUserUsingUser", testConfirmationTokenToOneUserUsingUser)
+	t.Run("OrganizationMemberToOrganizationUsingOrganization", testOrganizationMemberToOneOrganizationUsingOrganization)
+	t.Run("OrganizationMemberToUserUsingUser", testOrganizationMemberToOneUserUsingUser)
+	t.Run("OrganizationToUserUsingOwner", testOrganizationToOneUserUsingOwner)
 	t.Run("PasswordResetTokenToUserUsingUser", testPasswordResetTokenToOneUserUsingUser)
 	t.Run("PushTokenToUserUsingUser", testPushTokenToOneUserUsingUser)
 	t.Run("RefreshTokenToUserUsingUser", testRefreshTokenToOneUserUsingUser)
+	t.Run("SigningRequestToUserUsingInitiator", testSigningRequestToOneUserUsingInitiator)
+	t.Run("SigningRequestToVaultUsingVault", testSigningRequestToOneVaultUsingVault)
+	t.Run("SigningRequestToWalletUsingWallet", testSigningRequestToOneWalletUsingWallet)
+	t.Run("SpendingLimitToAssetUsingAsset", testSpendingLimitToOneAssetUsingAsset)
+	t.Run("SpendingLimitToVaultUsingVault", testSpendingLimitToOneVaultUsingVault)
+	t.Run("UserCredentialToUserUsingUser", testUserCredentialToOneUserUsingUser)
+	t.Run("VaultKeyToVaultUsingVault", testVaultKeyToOneVaultUsingVault)
+	t.Run("VaultToOrganizationUsingOrganization", testVaultToOneOrganizationUsingOrganization)
+	t.Run("WalletBalanceToAssetUsingAsset", testWalletBalanceToOneAssetUsingAsset)
+	t.Run("WalletBalanceToWalletUsingWallet", testWalletBalanceToOneWalletUsingWallet)
+	t.Run("WalletToChainUsingChain", testWalletToOneChainUsingChain)
+	t.Run("WalletToVaultUsingVault", testWalletToOneVaultUsingVault)
 }
 
 // TestOneToOne tests cannot be run in parallel
@@ -25,27 +48,93 @@ func TestOneToOne(t *testing.T) {
 // TestToMany tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToMany(t *testing.T) {
+	t.Run("AssetToSpendingLimits", testAssetToManySpendingLimits)
+	t.Run("AssetToWalletBalances", testAssetToManyWalletBalances)
+	t.Run("ChainToAddressBooks", testChainToManyAddressBooks)
+	t.Run("ChainToAssets", testChainToManyAssets)
+	t.Run("ChainToWallets", testChainToManyWallets)
+	t.Run("OrganizationToAddressBooks", testOrganizationToManyAddressBooks)
+	t.Run("OrganizationToAuditLogs", testOrganizationToManyAuditLogs)
+	t.Run("OrganizationToOrganizationMembers", testOrganizationToManyOrganizationMembers)
+	t.Run("OrganizationToVaults", testOrganizationToManyVaults)
+	t.Run("SigningRequestToRequestApprovals", testSigningRequestToManyRequestApprovals)
 	t.Run("UserToAccessTokens", testUserToManyAccessTokens)
+	t.Run("UserToCreatedByAddressBooks", testUserToManyCreatedByAddressBooks)
+	t.Run("UserToApprovals", testUserToManyApprovals)
+	t.Run("UserToAuditLogs", testUserToManyAuditLogs)
 	t.Run("UserToConfirmationTokens", testUserToManyConfirmationTokens)
+	t.Run("UserToOrganizationMembers", testUserToManyOrganizationMembers)
+	t.Run("UserToOwnerOrganizations", testUserToManyOwnerOrganizations)
 	t.Run("UserToPasswordResetTokens", testUserToManyPasswordResetTokens)
 	t.Run("UserToPushTokens", testUserToManyPushTokens)
 	t.Run("UserToRefreshTokens", testUserToManyRefreshTokens)
+	t.Run("UserToInitiatorSigningRequests", testUserToManyInitiatorSigningRequests)
+	t.Run("UserToUserCredentials", testUserToManyUserCredentials)
+	t.Run("VaultToSigningRequests", testVaultToManySigningRequests)
+	t.Run("VaultToSpendingLimits", testVaultToManySpendingLimits)
+	t.Run("VaultToVaultKeys", testVaultToManyVaultKeys)
+	t.Run("VaultToWallets", testVaultToManyWallets)
+	t.Run("WalletToSigningRequests", testWalletToManySigningRequests)
+	t.Run("WalletToWalletBalances", testWalletToManyWalletBalances)
 }
 
 // TestToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToOneSet(t *testing.T) {
 	t.Run("AccessTokenToUserUsingAccessTokens", testAccessTokenToOneSetOpUserUsingUser)
+	t.Run("AddressBookToChainUsingAddressBooks", testAddressBookToOneSetOpChainUsingChain)
+	t.Run("AddressBookToUserUsingCreatedByAddressBooks", testAddressBookToOneSetOpUserUsingCreatedByUser)
+	t.Run("AddressBookToOrganizationUsingAddressBooks", testAddressBookToOneSetOpOrganizationUsingOrganization)
 	t.Run("AppUserProfileToUserUsingAppUserProfile", testAppUserProfileToOneSetOpUserUsingUser)
+	t.Run("ApprovalToSigningRequestUsingRequestApprovals", testApprovalToOneSetOpSigningRequestUsingRequest)
+	t.Run("ApprovalToUserUsingApprovals", testApprovalToOneSetOpUserUsingUser)
+	t.Run("AssetToChainUsingAssets", testAssetToOneSetOpChainUsingChain)
+	t.Run("AuditLogToOrganizationUsingAuditLogs", testAuditLogToOneSetOpOrganizationUsingOrganization)
+	t.Run("AuditLogToUserUsingAuditLogs", testAuditLogToOneSetOpUserUsingUser)
 	t.Run("ConfirmationTokenToUserUsingConfirmationTokens", testConfirmationTokenToOneSetOpUserUsingUser)
+	t.Run("OrganizationMemberToOrganizationUsingOrganizationMembers", testOrganizationMemberToOneSetOpOrganizationUsingOrganization)
+	t.Run("OrganizationMemberToUserUsingOrganizationMembers", testOrganizationMemberToOneSetOpUserUsingUser)
+	t.Run("OrganizationToUserUsingOwnerOrganizations", testOrganizationToOneSetOpUserUsingOwner)
 	t.Run("PasswordResetTokenToUserUsingPasswordResetTokens", testPasswordResetTokenToOneSetOpUserUsingUser)
 	t.Run("PushTokenToUserUsingPushTokens", testPushTokenToOneSetOpUserUsingUser)
 	t.Run("RefreshTokenToUserUsingRefreshTokens", testRefreshTokenToOneSetOpUserUsingUser)
+	t.Run("SigningRequestToUserUsingInitiatorSigningRequests", testSigningRequestToOneSetOpUserUsingInitiator)
+	t.Run("SigningRequestToVaultUsingSigningRequests", testSigningRequestToOneSetOpVaultUsingVault)
+	t.Run("SigningRequestToWalletUsingSigningRequests", testSigningRequestToOneSetOpWalletUsingWallet)
+	t.Run("SpendingLimitToAssetUsingSpendingLimits", testSpendingLimitToOneSetOpAssetUsingAsset)
+	t.Run("SpendingLimitToVaultUsingSpendingLimits", testSpendingLimitToOneSetOpVaultUsingVault)
+	t.Run("UserCredentialToUserUsingUserCredentials", testUserCredentialToOneSetOpUserUsingUser)
+	t.Run("VaultKeyToVaultUsingVaultKeys", testVaultKeyToOneSetOpVaultUsingVault)
+	t.Run("VaultToOrganizationUsingVaults", testVaultToOneSetOpOrganizationUsingOrganization)
+	t.Run("WalletBalanceToAssetUsingWalletBalances", testWalletBalanceToOneSetOpAssetUsingAsset)
+	t.Run("WalletBalanceToWalletUsingWalletBalances", testWalletBalanceToOneSetOpWalletUsingWallet)
+	t.Run("WalletToChainUsingWallets", testWalletToOneSetOpChainUsingChain)
+	t.Run("WalletToVaultUsingWallets", testWalletToOneSetOpVaultUsingVault)
 }
 
 // TestToOneRemove tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToOneRemove(t *testing.T) {}
+func TestToOneRemove(t *testing.T) {
+	t.Run("AddressBookToChainUsingAddressBooks", testAddressBookToOneRemoveOpChainUsingChain)
+	t.Run("AddressBookToUserUsingCreatedByAddressBooks", testAddressBookToOneRemoveOpUserUsingCreatedByUser)
+	t.Run("AddressBookToOrganizationUsingAddressBooks", testAddressBookToOneRemoveOpOrganizationUsingOrganization)
+	t.Run("ApprovalToSigningRequestUsingRequestApprovals", testApprovalToOneRemoveOpSigningRequestUsingRequest)
+	t.Run("ApprovalToUserUsingApprovals", testApprovalToOneRemoveOpUserUsingUser)
+	t.Run("AssetToChainUsingAssets", testAssetToOneRemoveOpChainUsingChain)
+	t.Run("AuditLogToOrganizationUsingAuditLogs", testAuditLogToOneRemoveOpOrganizationUsingOrganization)
+	t.Run("AuditLogToUserUsingAuditLogs", testAuditLogToOneRemoveOpUserUsingUser)
+	t.Run("SigningRequestToUserUsingInitiatorSigningRequests", testSigningRequestToOneRemoveOpUserUsingInitiator)
+	t.Run("SigningRequestToVaultUsingSigningRequests", testSigningRequestToOneRemoveOpVaultUsingVault)
+	t.Run("SigningRequestToWalletUsingSigningRequests", testSigningRequestToOneRemoveOpWalletUsingWallet)
+	t.Run("SpendingLimitToAssetUsingSpendingLimits", testSpendingLimitToOneRemoveOpAssetUsingAsset)
+	t.Run("SpendingLimitToVaultUsingSpendingLimits", testSpendingLimitToOneRemoveOpVaultUsingVault)
+	t.Run("VaultKeyToVaultUsingVaultKeys", testVaultKeyToOneRemoveOpVaultUsingVault)
+	t.Run("VaultToOrganizationUsingVaults", testVaultToOneRemoveOpOrganizationUsingOrganization)
+	t.Run("WalletBalanceToAssetUsingWalletBalances", testWalletBalanceToOneRemoveOpAssetUsingAsset)
+	t.Run("WalletBalanceToWalletUsingWalletBalances", testWalletBalanceToOneRemoveOpWalletUsingWallet)
+	t.Run("WalletToChainUsingWallets", testWalletToOneRemoveOpChainUsingChain)
+	t.Run("WalletToVaultUsingWallets", testWalletToOneRemoveOpVaultUsingVault)
+}
 
 // TestOneToOneSet tests cannot be run in parallel
 // or deadlocks can occur.
@@ -60,17 +149,80 @@ func TestOneToOneRemove(t *testing.T) {}
 // TestToManyAdd tests cannot be run in parallel
 // or deadlocks can occur.
 func TestToManyAdd(t *testing.T) {
+	t.Run("AssetToSpendingLimits", testAssetToManyAddOpSpendingLimits)
+	t.Run("AssetToWalletBalances", testAssetToManyAddOpWalletBalances)
+	t.Run("ChainToAddressBooks", testChainToManyAddOpAddressBooks)
+	t.Run("ChainToAssets", testChainToManyAddOpAssets)
+	t.Run("ChainToWallets", testChainToManyAddOpWallets)
+	t.Run("OrganizationToAddressBooks", testOrganizationToManyAddOpAddressBooks)
+	t.Run("OrganizationToAuditLogs", testOrganizationToManyAddOpAuditLogs)
+	t.Run("OrganizationToOrganizationMembers", testOrganizationToManyAddOpOrganizationMembers)
+	t.Run("OrganizationToVaults", testOrganizationToManyAddOpVaults)
+	t.Run("SigningRequestToRequestApprovals", testSigningRequestToManyAddOpRequestApprovals)
 	t.Run("UserToAccessTokens", testUserToManyAddOpAccessTokens)
+	t.Run("UserToCreatedByAddressBooks", testUserToManyAddOpCreatedByAddressBooks)
+	t.Run("UserToApprovals", testUserToManyAddOpApprovals)
+	t.Run("UserToAuditLogs", testUserToManyAddOpAuditLogs)
 	t.Run("UserToConfirmationTokens", testUserToManyAddOpConfirmationTokens)
+	t.Run("UserToOrganizationMembers", testUserToManyAddOpOrganizationMembers)
+	t.Run("UserToOwnerOrganizations", testUserToManyAddOpOwnerOrganizations)
 	t.Run("UserToPasswordResetTokens", testUserToManyAddOpPasswordResetTokens)
 	t.Run("UserToPushTokens", testUserToManyAddOpPushTokens)
 	t.Run("UserToRefreshTokens", testUserToManyAddOpRefreshTokens)
+	t.Run("UserToInitiatorSigningRequests", testUserToManyAddOpInitiatorSigningRequests)
+	t.Run("UserToUserCredentials", testUserToManyAddOpUserCredentials)
+	t.Run("VaultToSigningRequests", testVaultToManyAddOpSigningRequests)
+	t.Run("VaultToSpendingLimits", testVaultToManyAddOpSpendingLimits)
+	t.Run("VaultToVaultKeys", testVaultToManyAddOpVaultKeys)
+	t.Run("VaultToWallets", testVaultToManyAddOpWallets)
+	t.Run("WalletToSigningRequests", testWalletToManyAddOpSigningRequests)
+	t.Run("WalletToWalletBalances", testWalletToManyAddOpWalletBalances)
 }
 
 // TestToManySet tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManySet(t *testing.T) {}
+func TestToManySet(t *testing.T) {
+	t.Run("AssetToSpendingLimits", testAssetToManySetOpSpendingLimits)
+	t.Run("AssetToWalletBalances", testAssetToManySetOpWalletBalances)
+	t.Run("ChainToAddressBooks", testChainToManySetOpAddressBooks)
+	t.Run("ChainToAssets", testChainToManySetOpAssets)
+	t.Run("ChainToWallets", testChainToManySetOpWallets)
+	t.Run("OrganizationToAddressBooks", testOrganizationToManySetOpAddressBooks)
+	t.Run("OrganizationToAuditLogs", testOrganizationToManySetOpAuditLogs)
+	t.Run("OrganizationToVaults", testOrganizationToManySetOpVaults)
+	t.Run("SigningRequestToRequestApprovals", testSigningRequestToManySetOpRequestApprovals)
+	t.Run("UserToCreatedByAddressBooks", testUserToManySetOpCreatedByAddressBooks)
+	t.Run("UserToApprovals", testUserToManySetOpApprovals)
+	t.Run("UserToAuditLogs", testUserToManySetOpAuditLogs)
+	t.Run("UserToInitiatorSigningRequests", testUserToManySetOpInitiatorSigningRequests)
+	t.Run("VaultToSigningRequests", testVaultToManySetOpSigningRequests)
+	t.Run("VaultToSpendingLimits", testVaultToManySetOpSpendingLimits)
+	t.Run("VaultToVaultKeys", testVaultToManySetOpVaultKeys)
+	t.Run("VaultToWallets", testVaultToManySetOpWallets)
+	t.Run("WalletToSigningRequests", testWalletToManySetOpSigningRequests)
+	t.Run("WalletToWalletBalances", testWalletToManySetOpWalletBalances)
+}
 
 // TestToManyRemove tests cannot be run in parallel
 // or deadlocks can occur.
-func TestToManyRemove(t *testing.T) {}
+func TestToManyRemove(t *testing.T) {
+	t.Run("AssetToSpendingLimits", testAssetToManyRemoveOpSpendingLimits)
+	t.Run("AssetToWalletBalances", testAssetToManyRemoveOpWalletBalances)
+	t.Run("ChainToAddressBooks", testChainToManyRemoveOpAddressBooks)
+	t.Run("ChainToAssets", testChainToManyRemoveOpAssets)
+	t.Run("ChainToWallets", testChainToManyRemoveOpWallets)
+	t.Run("OrganizationToAddressBooks", testOrganizationToManyRemoveOpAddressBooks)
+	t.Run("OrganizationToAuditLogs", testOrganizationToManyRemoveOpAuditLogs)
+	t.Run("OrganizationToVaults", testOrganizationToManyRemoveOpVaults)
+	t.Run("SigningRequestToRequestApprovals", testSigningRequestToManyRemoveOpRequestApprovals)
+	t.Run("UserToCreatedByAddressBooks", testUserToManyRemoveOpCreatedByAddressBooks)
+	t.Run("UserToApprovals", testUserToManyRemoveOpApprovals)
+	t.Run("UserToAuditLogs", testUserToManyRemoveOpAuditLogs)
+	t.Run("UserToInitiatorSigningRequests", testUserToManyRemoveOpInitiatorSigningRequests)
+	t.Run("VaultToSigningRequests", testVaultToManyRemoveOpSigningRequests)
+	t.Run("VaultToSpendingLimits", testVaultToManyRemoveOpSpendingLimits)
+	t.Run("VaultToVaultKeys", testVaultToManyRemoveOpVaultKeys)
+	t.Run("VaultToWallets", testVaultToManyRemoveOpWallets)
+	t.Run("WalletToSigningRequests", testWalletToManyRemoveOpSigningRequests)
+	t.Run("WalletToWalletBalances", testWalletToManyRemoveOpWalletBalances)
+}

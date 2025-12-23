@@ -7,12 +7,12 @@
 package api
 
 import (
+	"database/sql"
+	"github.com/google/wire"
 	"github.com/kashguard/go-mpc-vault/internal/auth"
 	"github.com/kashguard/go-mpc-vault/internal/config"
 	"github.com/kashguard/go-mpc-vault/internal/data/local"
 	"github.com/kashguard/go-mpc-vault/internal/metrics"
-	"database/sql"
-	"github.com/google/wire"
 	"testing"
 )
 
@@ -48,7 +48,21 @@ func InitNewServer(server config.Server) (*Server, error) {
 	if err != nil {
 		return nil, err
 	}
-	apiServer := newServerWithComponents(server, db, mailer, service, i18nService, clock, authService, localService, metricsService)
+	authAuthService, err := NewMpcAuthService(server, db)
+	if err != nil {
+		return nil, err
+	}
+	clientConn, err := NewMpcClientConnection(server)
+	if err != nil {
+		return nil, err
+	}
+	keyClient := NewKeyClient(clientConn)
+	vaultService := NewVaultService(db, keyClient)
+	signingClient := NewSigningClient(clientConn)
+	signingService := NewSigningService(db, signingClient)
+	organizationService := NewOrganizationService(db)
+	grpcServer := NewGrpcServer(server, authAuthService, vaultService, signingService)
+	apiServer := newServerWithComponents(server, db, mailer, service, i18nService, clock, authService, localService, metricsService, authAuthService, vaultService, signingService, organizationService, grpcServer)
 	return apiServer, nil
 }
 
@@ -74,7 +88,21 @@ func InitNewServerWithDB(server config.Server, db *sql.DB, t ...*testing.T) (*Se
 	if err != nil {
 		return nil, err
 	}
-	apiServer := newServerWithComponents(server, db, mailer, service, i18nService, clock, authService, localService, metricsService)
+	authAuthService, err := NewMpcAuthService(server, db)
+	if err != nil {
+		return nil, err
+	}
+	clientConn, err := NewMpcClientConnection(server)
+	if err != nil {
+		return nil, err
+	}
+	keyClient := NewKeyClient(clientConn)
+	vaultService := NewVaultService(db, keyClient)
+	signingClient := NewSigningClient(clientConn)
+	signingService := NewSigningService(db, signingClient)
+	organizationService := NewOrganizationService(db)
+	grpcServer := NewGrpcServer(server, authAuthService, vaultService, signingService)
+	apiServer := newServerWithComponents(server, db, mailer, service, i18nService, clock, authService, localService, metricsService, authAuthService, vaultService, signingService, organizationService, grpcServer)
 	return apiServer, nil
 }
 
@@ -87,6 +115,8 @@ var serviceSet = wire.NewSet(
 	NewMailer,
 	NewI18N,
 	authServiceSet, local.NewService, metrics.New, NewClock,
+	MpcProviderSet,
+	NewOrganizationService,
 )
 
 var authServiceSet = wire.NewSet(

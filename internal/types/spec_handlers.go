@@ -36,17 +36,27 @@ func (o *SwaggerSpec) initHandlerCache() {
 	o.Handlers["HEAD"] = make(map[string]bool)
 	o.Handlers["PATCH"] = make(map[string]bool)
 
+	o.Handlers["DELETE"]["/api/v1/organizations/{orgId}/members/{userId}"] = true
 	o.Handlers["DELETE"]["/api/v1/auth/account"] = true
 	o.Handlers["GET"]["/.well-known/assetlinks.json"] = true
 	o.Handlers["GET"]["/.well-known/apple-app-site-association"] = true
 	o.Handlers["GET"]["/api/v1/auth/register"] = true
 	o.Handlers["GET"]["/-/healthy"] = true
+	o.Handlers["GET"]["/api/v1/organizations/{orgId}/members"] = true
+	o.Handlers["GET"]["/api/v1/organizations"] = true
 	o.Handlers["GET"]["/-/ready"] = true
 	o.Handlers["GET"]["/swagger.yml"] = true
 	o.Handlers["GET"]["/api/v1/auth/userinfo"] = true
 	o.Handlers["GET"]["/-/version"] = true
+	o.Handlers["GET"]["/api/v1/requests"] = true
+	o.Handlers["POST"]["/api/v1/organizations/{orgId}/members"] = true
+	o.Handlers["POST"]["/api/v1/requests/{requestId}/approve"] = true
 	o.Handlers["POST"]["/api/v1/auth/change-password"] = true
 	o.Handlers["POST"]["/api/v1/auth/register/{registrationToken}"] = true
+	o.Handlers["POST"]["/api/v1/organizations"] = true
+	o.Handlers["POST"]["/api/v1/vaults/{vaultId}/sign"] = true
+	o.Handlers["POST"]["/api/v1/vaults"] = true
+	o.Handlers["POST"]["/api/v1/vaults/{vaultId}/wallets"] = true
 	o.Handlers["POST"]["/api/v1/auth/forgot-password/complete"] = true
 	o.Handlers["POST"]["/api/v1/auth/forgot-password"] = true
 	o.Handlers["POST"]["/api/v1/auth/login"] = true

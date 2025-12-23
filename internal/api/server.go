@@ -5,8 +5,10 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"net"
 	"net/http"
 
+	"github.com/dropbox/godropbox/time2"
 	"github.com/kashguard/go-mpc-vault/internal/config"
 	"github.com/kashguard/go-mpc-vault/internal/data/dto"
 	"github.com/kashguard/go-mpc-vault/internal/data/local"
@@ -15,9 +17,14 @@ import (
 	"github.com/kashguard/go-mpc-vault/internal/metrics"
 	"github.com/kashguard/go-mpc-vault/internal/push"
 	"github.com/kashguard/go-mpc-vault/internal/util"
-	"github.com/dropbox/godropbox/time2"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
+	"google.golang.org/grpc"
+
+	mpcAuth "github.com/kashguard/go-mpc-vault/internal/service/auth"
+	"github.com/kashguard/go-mpc-vault/internal/service/organization"
+	"github.com/kashguard/go-mpc-vault/internal/service/signing"
+	"github.com/kashguard/go-mpc-vault/internal/service/vault"
 
 	// Import postgres driver for database/sql package
 	_ "github.com/lib/pq"
@@ -29,7 +36,10 @@ type Router struct {
 	Management *echo.Group
 	APIV1Auth  *echo.Group
 	APIV1Push  *echo.Group
+	APIV1Vault *echo.Group
+	APIV1Sign  *echo.Group
 	WellKnown  *echo.Group
+	APIV1Org   *echo.Group
 }
 
 // Server is a central struct keeping all the dependencies.
@@ -46,6 +56,7 @@ type Server struct {
 	// -> initialized with router.Init(s) function
 	Echo   *echo.Echo `wire:"-"`
 	Router *Router    `wire:"-"`
+	GRPC   *grpc.Server
 
 	Config  config.Server
 	DB      *sql.DB
@@ -56,6 +67,12 @@ type Server struct {
 	Auth    AuthService
 	Local   *local.Service
 	Metrics *metrics.Service
+
+	// MPC Services
+	WebAuthn     mpcAuth.AuthService
+	Vault        vault.Service
+	Signing      signing.Service
+	Organization organization.Service
 }
 
 // newServerWithComponents is used by wire to initialize the server components.
@@ -71,17 +88,27 @@ func newServerWithComponents(
 	auth AuthService,
 	local *local.Service,
 	metrics *metrics.Service,
+	webAuthn mpcAuth.AuthService,
+	vault vault.Service,
+	signing signing.Service,
+	org organization.Service,
+	grpcServer *grpc.Server,
 ) *Server {
 	return &Server{
-		Config:  cfg,
-		DB:      db,
-		Mailer:  mail,
-		Push:    pusher,
-		I18n:    i18n,
-		Clock:   clock,
-		Auth:    auth,
-		Local:   local,
-		Metrics: metrics,
+		Config:       cfg,
+		DB:           db,
+		Mailer:       mail,
+		Push:         pusher,
+		I18n:         i18n,
+		Clock:        clock,
+		Auth:         auth,
+		Local:        local,
+		Metrics:      metrics,
+		WebAuthn:     webAuthn,
+		Vault:        vault,
+		Signing:      signing,
+		Organization: org,
+		GRPC:         grpcServer,
 	}
 }
 
@@ -120,6 +147,20 @@ func (s *Server) Start() error {
 		return errors.New("server is not ready")
 	}
 
+	if s.GRPC != nil {
+		go func() {
+			lc := net.ListenConfig{}
+			lis, err := lc.Listen(context.Background(), "tcp", s.Config.Grpc.ListenAddress)
+			if err != nil {
+				log.Fatal().Err(err).Msg("Failed to listen for gRPC")
+			}
+			log.Info().Str("address", s.Config.Grpc.ListenAddress).Msg("Starting gRPC server")
+			if err := s.GRPC.Serve(lis); err != nil {
+				log.Fatal().Err(err).Msg("Failed to serve gRPC")
+			}
+		}()
+	}
+
 	if err := s.Echo.Start(s.Config.Echo.ListenAddress); err != nil {
 		return fmt.Errorf("failed to start echo server: %w", err)
 	}
@@ -131,6 +172,11 @@ func (s *Server) Shutdown(ctx context.Context) []error {
 	log.Warn().Msg("Shutting down server")
 
 	var errs []error
+
+	if s.GRPC != nil {
+		log.Debug().Msg("Shutting down gRPC server")
+		s.GRPC.GracefulStop()
+	}
 
 	if s.DB != nil {
 		log.Debug().Msg("Closing database connection")

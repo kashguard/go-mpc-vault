@@ -375,6 +375,92 @@ paths:
           description: GetUserInfoResponse
           schema:
             $ref: '#/definitions/getUserInfoResponse'
+  /api/v1/organizations:
+    get:
+      description: List organizations of current user
+      tags:
+      - organization
+      summary: List Organizations
+      operationId: GetListOrganizationsRoute
+      responses:
+        "200":
+          description: List organizations
+          schema:
+            $ref: '#/definitions/listOrganizationsResponse'
+    post:
+      description: Create a new organization
+      tags:
+      - organization
+      summary: Create Organization
+      operationId: PostCreateOrganizationRoute
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/createOrganizationPayload'
+      responses:
+        "200":
+          description: Organization created
+          schema:
+            $ref: '#/definitions/createOrganizationResponse'
+  /api/v1/organizations/{orgId}/members:
+    get:
+      description: List members of organization
+      tags:
+      - organization
+      summary: List Organization Members
+      operationId: GetListOrganizationMembersRoute
+      parameters:
+      - type: string
+        name: orgId
+        in: path
+        required: true
+      responses:
+        "200":
+          description: List members
+          schema:
+            $ref: '#/definitions/listOrganizationMembersResponse'
+    post:
+      description: Add member to organization
+      tags:
+      - organization
+      summary: Add Organization Member
+      operationId: PostAddOrganizationMemberRoute
+      parameters:
+      - type: string
+        name: orgId
+        in: path
+        required: true
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/addOrganizationMemberPayload'
+      responses:
+        "200":
+          description: Member added
+          schema:
+            $ref: '#/definitions/addOrganizationMemberResponse'
+  /api/v1/organizations/{orgId}/members/{userId}:
+    delete:
+      description: Remove member from organization
+      tags:
+      - organization
+      summary: Remove Organization Member
+      operationId: DeleteOrganizationMemberRoute
+      parameters:
+      - type: string
+        name: orgId
+        in: path
+        required: true
+      - type: string
+        name: userId
+        in: path
+        required: true
+      responses:
+        "200":
+          description: Member removed
   /api/v1/push/token:
     put:
       security:
@@ -403,6 +489,110 @@ paths:
           description: PublicHTTPError, type `PUSH_TOKEN_ALREADY_EXISTS`
           schema:
             $ref: '#/definitions/publicHttpError'
+  /api/v1/requests/{requestId}/approve:
+    post:
+      security:
+      - Bearer: []
+      tags:
+      - signing
+      summary: Approve or reject a signing request
+      operationId: PostApproveSigningRequest
+      parameters:
+      - type: string
+        name: requestId
+        in: path
+        required: true
+      - name: Payload
+        in: body
+        schema:
+          $ref: '#/definitions/approveSigningRequestPayload'
+      responses:
+        "200":
+          description: Request Updated
+          schema:
+            $ref: '#/definitions/approveSigningResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Request Not Found
+  /api/v1/vaults:
+    post:
+      security:
+      - Bearer: []
+      tags:
+      - vault
+      summary: Create a new vault
+      operationId: PostCreateVault
+      parameters:
+      - name: Payload
+        in: body
+        schema:
+          $ref: '#/definitions/createVaultPayload'
+      responses:
+        "200":
+          description: Vault Created
+          schema:
+            $ref: '#/definitions/createVaultResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+  /api/v1/vaults/{vaultId}/sign:
+    post:
+      security:
+      - Bearer: []
+      tags:
+      - signing
+      summary: Create a signing request
+      operationId: PostCreateSigningRequest
+      parameters:
+      - type: string
+        name: vaultId
+        in: path
+        required: true
+      - name: Payload
+        in: body
+        schema:
+          $ref: '#/definitions/createSigningRequestPayload'
+      responses:
+        "200":
+          description: Request Created
+          schema:
+            $ref: '#/definitions/createSigningResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+  /api/v1/vaults/{vaultId}/wallets:
+    post:
+      security:
+      - Bearer: []
+      tags:
+      - vault
+      summary: Create a new wallet in a vault
+      operationId: PostCreateWallet
+      parameters:
+      - type: string
+        name: vaultId
+        in: path
+        required: true
+      - name: Payload
+        in: body
+        schema:
+          $ref: '#/definitions/createWalletPayload'
+      responses:
+        "200":
+          description: Wallet Created
+          schema:
+            $ref: '#/definitions/createWalletResponse'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "404":
+          description: Vault Not Found
   /swagger.yml:
     get:
       description: |-
@@ -418,6 +608,145 @@ paths:
         "200":
           description: OK
 definitions:
+  addOrganizationMemberPayload:
+    type: object
+    required:
+    - user_id
+    - role
+    properties:
+      role:
+        type: string
+        x-order: 1
+      user_id:
+        type: string
+        x-order: 0
+  addOrganizationMemberResponse:
+    type: object
+    properties:
+      ok:
+        type: boolean
+        x-order: 0
+  approveSigningRequestPayload:
+    type: object
+    required:
+    - action
+    properties:
+      action:
+        type: string
+        enum:
+        - approve
+        - reject
+      authenticator_data:
+        description: Base64 encoded WebAuthn Authenticator Data
+        type: string
+        format: byte
+      client_data_json:
+        description: Base64 encoded WebAuthn Client Data JSON
+        type: string
+        format: byte
+      comment:
+        type: string
+      credential_id:
+        description: Base64 encoded WebAuthn Credential ID
+        type: string
+        format: byte
+      signature:
+        description: Base64 encoded WebAuthn Assertion Signature
+        type: string
+        format: byte
+  approveSigningResponse:
+    type: object
+    properties:
+      current_approvals:
+        type: integer
+      required_approvals:
+        type: integer
+      status:
+        type: string
+  createOrganizationPayload:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        x-order: 0
+  createOrganizationResponse:
+    type: object
+    properties:
+      name:
+        type: string
+        x-order: 1
+      organization_id:
+        type: string
+        x-order: 0
+  createSigningRequestPayload:
+    type: object
+    required:
+    - wallet_id
+    - to_address
+    - amount
+    properties:
+      amount:
+        type: string
+      note:
+        type: string
+      to_address:
+        type: string
+      tx_data:
+        type: string
+      wallet_id:
+        type: string
+        format: uuid4
+  createSigningResponse:
+    type: object
+    properties:
+      request_id:
+        type: string
+        format: uuid4
+      status:
+        type: string
+  createVaultPayload:
+    type: object
+    required:
+    - name
+    properties:
+      chains:
+        type: array
+        items:
+          type: string
+        example:
+        - eth
+        - btc
+      name:
+        type: string
+        example: My Team Vault
+  createVaultResponse:
+    type: object
+    properties:
+      status:
+        type: string
+      vault_id:
+        type: string
+        format: uuid4
+  createWalletPayload:
+    type: object
+    required:
+    - chain_id
+    properties:
+      chain_id:
+        type: string
+        example: eth
+  createWalletResponse:
+    type: object
+    properties:
+      address:
+        type: string
+      chain_id:
+        type: string
+      wallet_id:
+        type: string
+        format: uuid4
   deleteUserAccountPayload:
     type: object
     required:
@@ -475,11 +804,45 @@ definitions:
       key:
         description: Key of field failing validation
         type: string
+  listOrganizationMembersResponse:
+    type: object
+    properties:
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/organizationMemberItem'
+        x-order: 0
+  listOrganizationsResponse:
+    type: object
+    properties:
+      organizations:
+        type: array
+        items:
+          $ref: '#/definitions/organizationItem'
+        x-order: 0
   orderDir:
     type: string
     enum:
     - asc
     - desc
+  organizationItem:
+    type: object
+    properties:
+      id:
+        type: string
+        x-order: 0
+      name:
+        type: string
+        x-order: 1
+  organizationMemberItem:
+    type: object
+    properties:
+      role:
+        type: string
+        x-order: 1
+      user_id:
+        type: string
+        x-order: 0
   postChangePasswordPayload:
     type: object
     required:

@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/kashguard/go-mpc-vault/internal/api/grpc/v1";
+
+import "google/api/annotations.proto";
+
+service SigningService {
+  // Create a signing request (requires Passkey signature)
+  rpc CreateRequest(CreateSigningRequest) returns (CreateSigningResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/vaults/{vault_id}/sign"
+      body: "*"
+    };
+  }
+
+  // Approve a signing request (requires Passkey signature)
+  rpc ApproveRequest(ApproveSigningRequest) returns (ApproveSigningResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/requests/{request_id}/approve"
+      body: "*"
+    };
+  }
+
+  // List signing requests
+  rpc ListRequests(ListSigningRequestsRequest) returns (ListSigningRequestsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/requests"
+    };
+  }
+}
+
+message CreateSigningRequest {
+  string vault_id = 1;
+  string wallet_id = 2;
+  string to_address = 3;
+  string amount = 4; // Decimal string
+  string tx_data = 5; // Hex encoded
+  string note = 6;
+}
+
+message CreateSigningResponse {
+  string request_id = 1;
+  string status = 2;
+}
+
+message ApproveSigningRequest {
+  string request_id = 1;
+  string action = 2; // "approve" or "reject"
+  string comment = 3;
+  bytes credential_id = 4;
+  bytes signature = 5;
+  bytes authenticator_data = 6;
+  bytes client_data_json = 7;
+}
+
+message ApproveSigningResponse {
+  string status = 1;
+  int32 current_approvals = 2;
+  int32 required_approvals = 3;
+}
+
+message ListSigningRequestsRequest {
+  string vault_id = 1;
+  string status = 2;
+  int32 page = 3;
+  int32 limit = 4;
+}
+
+message ListSigningRequestsResponse {
+  repeated SigningRequest requests = 1;
+  int32 total = 2;
+}
+
+message SigningRequest {
+  string id = 1;
+  string vault_id = 2;
+  string wallet_id = 3;
+  string to_address = 4;
+  string amount = 5;
+  string status = 6;
+  string created_at = 7;
+}

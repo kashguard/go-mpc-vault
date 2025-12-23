@@ -5,7 +5,10 @@ import (
 	"github.com/kashguard/go-mpc-vault/internal/api"
 	"github.com/kashguard/go-mpc-vault/internal/api/handlers/auth"
 	"github.com/kashguard/go-mpc-vault/internal/api/handlers/common"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/organization"
 	"github.com/kashguard/go-mpc-vault/internal/api/handlers/push"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/signing"
+	"github.com/kashguard/go-mpc-vault/internal/api/handlers/vault"
 	"github.com/kashguard/go-mpc-vault/internal/api/handlers/wellknown"
 	"github.com/labstack/echo/v4"
 )
@@ -28,7 +31,17 @@ func AttachAllRoutes(s *api.Server) {
 		common.GetReadyRoute(s),
 		common.GetSwaggerRoute(s),
 		common.GetVersionRoute(s),
-		push.PutUpdatePushTokenRoute(s),
+	organization.DeleteOrganizationMemberRoute(s),
+	organization.GetListOrganizationMembersRoute(s),
+	organization.GetListOrganizationsRoute(s),
+	organization.PostAddOrganizationMemberRoute(s),
+	organization.PostCreateOrganizationRoute(s),
+		signing.GetListSigningRequestsRoute(s),
+	push.PutUpdatePushTokenRoute(s),
+	signing.PostApproveSigningRequestRoute(s),
+	signing.PostCreateSigningRequestRoute(s),
+	vault.PostCreateVaultRoute(s),
+	vault.PostCreateWalletRoute(s),
 		wellknown.GetAndroidDigitalAssetLinksRoute(s),
 		wellknown.GetAppleAppSiteAssociationRoute(s),
 	}

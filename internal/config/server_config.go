@@ -101,9 +101,23 @@ type I18n struct {
 	BundleDirAbs    string
 }
 
+type GrpcServer struct {
+	ListenAddress string
+}
+
+type MpcServer struct {
+	Address    string
+	ServerName string
+	CACertFile string
+	CertFile   string
+	KeyFile    string
+}
+
 type Server struct {
 	Database   Database
 	Echo       EchoServer
+	Grpc       GrpcServer
+	Mpc        MpcServer
 	Pprof      PprofServer
 	Paths      PathsServer
 	Auth       AuthServer
@@ -176,6 +190,16 @@ func DefaultServiceConfigFromEnv() Server {
 				ReferrerPolicy:        util.GetEnv("SERVER_ECHO_SECURE_MIDDLEWARE_REFERRER_POLICY", ""),
 			},
 			WebTemplatesViewsBaseDirAbs: util.GetEnv("SERVER_ECHO_WEB_TEMPLATES_VIEWS_BASE_DIR_ABS", filepath.Join(util.GetProjectRootDir(), "/web/templates/views")),
+		},
+		Grpc: GrpcServer{
+			ListenAddress: util.GetEnv("SERVER_GRPC_LISTEN_ADDRESS", ":9090"),
+		},
+		Mpc: MpcServer{
+			Address:    util.GetEnv("SERVER_MPC_ADDRESS", "localhost:9000"),
+			ServerName: util.GetEnv("SERVER_MPC_SERVER_NAME", "mpc-server"),
+			CACertFile: util.GetEnv("SERVER_MPC_CA_CERT_FILE", ""),
+			CertFile:   util.GetEnv("SERVER_MPC_CERT_FILE", ""),
+			KeyFile:    util.GetEnv("SERVER_MPC_KEY_FILE", ""),
 		},
 		Pprof: PprofServer{
 			// https://golang.org/pkg/net/http/pprof/

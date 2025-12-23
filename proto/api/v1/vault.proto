@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/kashguard/go-mpc-vault/internal/api/grpc/v1";
+
+import "google/api/annotations.proto";
+
+service VaultService {
+  // Create a new vault (requires Passkey signature)
+  rpc CreateVault(CreateVaultRequest) returns (CreateVaultResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/vaults"
+      body: "*"
+    };
+  }
+
+  // List vaults
+  rpc ListVaults(ListVaultsRequest) returns (ListVaultsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/vaults"
+    };
+  }
+
+  // Create/Derive a wallet in a vault (requires Passkey signature)
+  rpc CreateWallet(CreateWalletRequest) returns (CreateWalletResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/vaults/{vault_id}/wallets"
+      body: "*"
+    };
+  }
+}
+
+message CreateVaultRequest {
+  string name = 1;
+  int32 threshold = 2;
+  repeated string chains = 3; // List of chain IDs to initialize
+}
+
+message CreateVaultResponse {
+  string vault_id = 1;
+  string status = 2; // e.g., "creating" (DKG in progress)
+}
+
+message ListVaultsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+}
+
+message ListVaultsResponse {
+  repeated Vault vaults = 1;
+  int32 total = 2;
+}
+
+message Vault {
+  string id = 1;
+  string name = 2;
+  int32 threshold = 3;
+  string created_at = 4;
+}
+
+message CreateWalletRequest {
+  string vault_id = 1;
+  string chain_id = 2;
+}
+
+message CreateWalletResponse {
+  string wallet_id = 1;
+  string address = 2;
+  string chain_id = 3;
+}

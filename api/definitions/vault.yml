@@ -1,0 +1,41 @@
+swagger: "2.0"
+definitions:
+  CreateVaultPayload:
+    type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        example: "My Team Vault"
+      chains:
+        type: array
+        items:
+          type: string
+        example: ["eth", "btc"]
+  CreateVaultResponse:
+    type: object
+    properties:
+      vault_id:
+        type: string
+        format: uuid4
+      status:
+        type: string
+  CreateWalletPayload:
+    type: object
+    required:
+      - chain_id
+    properties:
+      chain_id:
+        type: string
+        example: "eth"
+  CreateWalletResponse:
+    type: object
+    properties:
+      wallet_id:
+        type: string
+        format: uuid4
+      address:
+        type: string
+      chain_id:
+        type: string

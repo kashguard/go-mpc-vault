@@ -5,18 +5,46 @@ package models
 
 var TableNames = struct {
 	AccessTokens        string
+	AddressBook         string
 	AppUserProfiles     string
+	Approvals           string
+	Assets              string
+	AuditLogs           string
+	Chains              string
 	ConfirmationTokens  string
+	OrganizationMembers string
+	Organizations       string
 	PasswordResetTokens string
 	PushTokens          string
 	RefreshTokens       string
+	SigningRequests     string
+	SpendingLimits      string
+	UserCredentials     string
 	Users               string
+	VaultKeys           string
+	Vaults              string
+	WalletBalances      string
+	Wallets             string
 }{
 	AccessTokens:        "access_tokens",
+	AddressBook:         "address_book",
 	AppUserProfiles:     "app_user_profiles",
+	Approvals:           "approvals",
+	Assets:              "assets",
+	AuditLogs:           "audit_logs",
+	Chains:              "chains",
 	ConfirmationTokens:  "confirmation_tokens",
+	OrganizationMembers: "organization_members",
+	Organizations:       "organizations",
 	PasswordResetTokens: "password_reset_tokens",
 	PushTokens:          "push_tokens",
 	RefreshTokens:       "refresh_tokens",
+	SigningRequests:     "signing_requests",
+	SpendingLimits:      "spending_limits",
+	UserCredentials:     "user_credentials",
 	Users:               "users",
+	VaultKeys:           "vault_keys",
+	Vaults:              "vaults",
+	WalletBalances:      "wallet_balances",
+	Wallets:             "wallets",
 }

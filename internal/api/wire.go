@@ -1,16 +1,18 @@
 //go:build wireinject
 
+//go:generate go run -mod=mod github.com/google/wire/cmd/wire
+
 package api
 
 import (
 	"database/sql"
 	"testing"
 
+	"github.com/google/wire"
 	"github.com/kashguard/go-mpc-vault/internal/auth"
 	"github.com/kashguard/go-mpc-vault/internal/config"
 	"github.com/kashguard/go-mpc-vault/internal/data/local"
 	"github.com/kashguard/go-mpc-vault/internal/metrics"
-	"github.com/google/wire"
 )
 
 // INJECTORS - https://github.com/google/wire/blob/main/docs/guide.md#injectors
@@ -25,6 +27,8 @@ var serviceSet = wire.NewSet(
 	local.NewService,
 	metrics.New,
 	NewClock,
+	MpcProviderSet,
+	NewOrganizationService,
 )
 
 var authServiceSet = wire.NewSet(

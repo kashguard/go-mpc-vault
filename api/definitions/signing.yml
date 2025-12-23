@@ -1,0 +1,89 @@
+swagger: "2.0"
+definitions:
+  CreateSigningRequestPayload:
+    type: object
+    required:
+      - wallet_id
+      - to_address
+      - amount
+    properties:
+      wallet_id:
+        type: string
+        format: uuid4
+      to_address:
+        type: string
+      amount:
+        type: string
+      tx_data:
+        type: string
+      note:
+        type: string
+  CreateSigningResponse:
+    type: object
+    properties:
+      request_id:
+        type: string
+        format: uuid4
+      status:
+        type: string
+  ApproveSigningRequestPayload:
+    type: object
+    required:
+      - action
+    properties:
+      action:
+        type: string
+        enum: ["approve", "reject"]
+      comment:
+        type: string
+      credential_id:
+        type: string
+        format: byte
+        description: Base64 encoded WebAuthn Credential ID
+      signature:
+        type: string
+        format: byte
+        description: Base64 encoded WebAuthn Assertion Signature
+      authenticator_data:
+        type: string
+        format: byte
+        description: Base64 encoded WebAuthn Authenticator Data
+      client_data_json:
+        type: string
+        format: byte
+        description: Base64 encoded WebAuthn Client Data JSON
+  ApproveSigningResponse:
+    type: object
+    properties:
+      status:
+        type: string
+      current_approvals:
+        type: integer
+      required_approvals:
+        type: integer
+
+  SigningRequestItem:
+    type: object
+    properties:
+      id:
+        type: string
+      vault_id:
+        type: string
+      wallet_id:
+        type: string
+      to_address:
+        type: string
+      status:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+  ListSigningRequestsResponse:
+    type: object
+    properties:
+      requests:
+        type: array
+        items:
+          $ref: "#/definitions/SigningRequestItem"
+      total:
+        type: integer

@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package api.v1;
+
+option go_package = "github.com/kashguard/go-mpc-vault/internal/api/grpc/v1";
+
+import "google/api/annotations.proto";
+
+service AuthService {
+  // Register challenge
+  rpc RegisterChallenge(RegisterChallengeRequest) returns (RegisterChallengeResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/register/challenge"
+      body: "*"
+    };
+  }
+  
+  // Register verify
+  rpc RegisterVerify(RegisterVerifyRequest) returns (RegisterVerifyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/register/verify"
+      body: "*"
+    };
+  }
+
+  // Login challenge
+  rpc LoginChallenge(LoginChallengeRequest) returns (LoginChallengeResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login/challenge"
+      body: "*"
+    };
+  }
+
+  // Login verify
+  rpc LoginVerify(LoginVerifyRequest) returns (LoginVerifyResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login/verify"
+      body: "*"
+    };
+  }
+}
+
+message RegisterChallengeRequest {
+  string email = 1;
+}
+
+message RegisterChallengeResponse {
+  string public_key_credential_creation_options = 1; // JSON string
+}
+
+message RegisterVerifyRequest {
+  string email = 1;
+  string credential_json = 2; // JSON string from navigator.credentials.create()
+}
+
+message RegisterVerifyResponse {
+  string user_id = 1;
+  string access_token = 2;
+}
+
+message LoginChallengeRequest {
+  string email = 1;
+}
+
+message LoginChallengeResponse {
+  string public_key_credential_request_options = 1; // JSON string
+}
+
+message LoginVerifyRequest {
+  string email = 1;
+  string assertion_json = 2; // JSON string from navigator.credentials.get()
+}
+
+message LoginVerifyResponse {
+  string user_id = 1;
+  string access_token = 2;
+}

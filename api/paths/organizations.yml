@@ -1,0 +1,146 @@
+swagger: "2.0"
+info:
+  title: github.com/kashguard/go-mpc-vault
+  version: 0.1.0
+paths:
+  /api/v1/organizations:
+    post:
+      summary: Create Organization
+      description: Create a new organization
+      operationId: PostCreateOrganizationRoute
+      tags:
+        - organization
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/createOrganizationPayload"
+      responses:
+        "200":
+          description: Organization created
+          schema:
+            $ref: "#/definitions/createOrganizationResponse"
+    get:
+      summary: List Organizations
+      description: List organizations of current user
+      operationId: GetListOrganizationsRoute
+      tags:
+        - organization
+      responses:
+        "200":
+          description: List organizations
+          schema:
+            $ref: "#/definitions/listOrganizationsResponse"
+  /api/v1/organizations/{orgId}/members:
+    get:
+      summary: List Organization Members
+      description: List members of organization
+      operationId: GetListOrganizationMembersRoute
+      tags:
+        - organization
+      parameters:
+        - in: path
+          name: orgId
+          required: true
+          type: string
+      responses:
+        "200":
+          description: List members
+          schema:
+            $ref: "#/definitions/listOrganizationMembersResponse"
+    post:
+      summary: Add Organization Member
+      description: Add member to organization
+      operationId: PostAddOrganizationMemberRoute
+      tags:
+        - organization
+      parameters:
+        - in: path
+          name: orgId
+          required: true
+          type: string
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: "#/definitions/addOrganizationMemberPayload"
+      responses:
+        "200":
+          description: Member added
+          schema:
+            $ref: "#/definitions/addOrganizationMemberResponse"
+  /api/v1/organizations/{orgId}/members/{userId}:
+    delete:
+      summary: Remove Organization Member
+      description: Remove member from organization
+      operationId: DeleteOrganizationMemberRoute
+      tags:
+        - organization
+      parameters:
+        - in: path
+          name: orgId
+          required: true
+          type: string
+        - in: path
+          name: userId
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Member removed
+definitions:
+  createOrganizationPayload:
+    type: object
+    required: [name]
+    properties:
+      name:
+        type: string
+  createOrganizationResponse:
+    type: object
+    properties:
+      organization_id:
+        type: string
+      name:
+        type: string
+  listOrganizationsResponse:
+    type: object
+    properties:
+      organizations:
+        type: array
+        items:
+          $ref: "#/definitions/organizationItem"
+  organizationItem:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  listOrganizationMembersResponse:
+    type: object
+    properties:
+      members:
+        type: array
+        items:
+          $ref: "#/definitions/organizationMemberItem"
+  organizationMemberItem:
+    type: object
+    properties:
+      user_id:
+        type: string
+      role:
+        type: string
+  addOrganizationMemberPayload:
+    type: object
+    required: [user_id, role]
+    properties:
+      user_id:
+        type: string
+      role:
+        type: string
+  addOrganizationMemberResponse:
+    type: object
+    properties:
+      ok:
+        type: boolean
